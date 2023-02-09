@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!Player.player.isMoveEnabled || Player.player.isDashing) return;
+        if ((!Player.player.isMoveEnabled || Player.player.isDashing)) return;
 
         Move();
     }
@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     void Move()
     {
         Player.player.rb.MovePosition( Player.player.rb.position + movement * speed * Time.deltaTime);
+        Player.player.isMoving = movement != Vector2.zero ? true : false;
     }
     #endregion
 

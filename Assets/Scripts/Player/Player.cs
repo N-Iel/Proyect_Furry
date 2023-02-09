@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     [Header("Movement")]
     public bool isMoveEnabled = true;
+    public bool isMoving = false;
     public Vector2 lookingDir;
     Vector2 storedLookingDir;
 
