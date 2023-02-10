@@ -6,16 +6,30 @@ public class PlayerAnimator : MonoBehaviour
 {
 
     // Animations
-    public Animator animator;
+    Animator animator;
+    PlayerSound playerS;
+
+    private void Awake()
+    {
+        animator= GetComponent<Animator>();
+        playerS = GetComponent<PlayerSound>();
+    }
 
     // Update is called once per frame
     void Update()
     {
         MovementAnim();
+        DashAnim();
     }
 
     void MovementAnim()
     {
         animator.SetBool("isMoving", Player.player.isMoving);
+    }
+
+    void DashAnim()
+    {
+        if(!animator.GetBool("isDashing") && Player.player.isDashing) playerS.PlayDash();
+        animator.SetBool("isDashing", Player.player.isDashing);
     }
 }

@@ -6,7 +6,9 @@ public class PlayerDash : MonoBehaviour
 {
     #region Variables
     // Dash Params
-    public float dashingPower = 24f,
+    public float dashingPowerMax = 24f,
+                 dashingAccel = 0.1f,
+                 dashingDeccel = 0.1f,
                  dashingTime = 0.2f,
                  dashingCooldown = 1f;
 
@@ -38,14 +40,25 @@ public class PlayerDash : MonoBehaviour
     #region Corrutines
     IEnumerator Dash()
     {
-        // Dashing
+        // Setting player state
         Player.player.canDash = false;
         Player.player.isDashing = true;
         Player.player.isinvincible = true;
+
+        // Accelerate
+        float dashingPower = 0.1f;
+        while(dashingPower < dashingPowerMax)
+        {
+            dashingPower *= dashingAccel * Time.deltaTime;
+        }
         Player.player.rb.velocity = Player.player.lookingDir * dashingPower;
         tr.emitting = true;
         yield return new WaitForSeconds(dashingTime);
 
+        while (dashingPower > 0)
+        {
+            dashingPower /= dashingDeccel * Time.deltaTime;
+        }
         // CoolDown
         tr.emitting = false;
         Player.player.isDashing = false;

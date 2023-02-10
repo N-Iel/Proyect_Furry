@@ -23,7 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if ((!Player.player.isMoveEnabled || Player.player.isDashing)) return;
+        if ((!Player.player.isMoveEnabled || Player.player.isDashing))
+        {
+            Player.player.isMoving = false;
+            return;
+        }
 
         Move();
     }
