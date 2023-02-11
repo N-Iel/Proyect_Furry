@@ -40,6 +40,7 @@ public class PlayerDash : MonoBehaviour
     IEnumerator Dash()
     {
         // Setting player state
+        Player.player.playerAnim.PlayDash();
         Player.player.canDash = false;
         Player.player.isDashing = true;
         Player.player.isinvincible = true;
@@ -51,6 +52,7 @@ public class PlayerDash : MonoBehaviour
         yield return new WaitForSeconds(dashingTime);
 
         // CoolDown
+        Player.player.playerAnim.EndDash();
         tr.emitting = false;
         Player.player.isDashing = false;
         Player.player.isinvincible = false;

@@ -8,19 +8,20 @@ public class PlayerAnimator : MonoBehaviour
     // Animations
     Animator animator;
     PlayerSound playerS;
+    Shadow shadow;
     public ParticleSystem dashParticle;
 
     private void Awake()
     {
         animator= GetComponent<Animator>();
         playerS = GetComponent<PlayerSound>();
+        shadow = GetComponent<Shadow>();
     }
 
     // Update is called once per frame
     void Update()
     {
         MovementAnim();
-        DashAnim();
     }
 
     void MovementAnim()
@@ -28,14 +29,18 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("isMoving", Player.player.isMoving);
     }
 
-    void DashAnim()
+    public void PlayDash()
     {
-        if (!animator.GetBool("isDashing") && Player.player.isDashing)
-        {
-            playerS.PlayDash();
-            dashParticle.Play();
-            Debug.Log("Dash effects triggered");
-        }
-        animator.SetBool("isDashing", Player.player.isDashing);
+        Debug.Log("dashAnim");
+        shadow.enabled = true;
+        playerS.PlayDash(); // Sound
+        if (dashParticle) dashParticle.Play(); // Particle
+        animator.SetBool("isDashing", true);
+    }
+
+    public void EndDash()
+    {
+        shadow.enabled = false;
+        animator.SetBool("isDashing", false);
     }
 }

@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     [Header("Model")]
     [SerializeField] GameObject playerModel;
+    public PlayerAnimator playerAnim;
 
     public Rigidbody2D rb { get; private set; }
     public static Player player;
