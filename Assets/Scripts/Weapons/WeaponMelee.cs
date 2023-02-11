@@ -33,7 +33,7 @@ public class WeaponMelee : MonoBehaviour
 
     void Timer()
     {
-        Debug.Log(cooldownTimer);
+        //Debug.Log(cooldownTimer);
     }
 
     void AttackInputs()

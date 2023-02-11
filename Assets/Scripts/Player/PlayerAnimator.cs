@@ -8,6 +8,7 @@ public class PlayerAnimator : MonoBehaviour
     // Animations
     Animator animator;
     PlayerSound playerS;
+    public ParticleSystem dashParticle;
 
     private void Awake()
     {
@@ -29,7 +30,12 @@ public class PlayerAnimator : MonoBehaviour
 
     void DashAnim()
     {
-        if(!animator.GetBool("isDashing") && Player.player.isDashing) playerS.PlayDash();
+        if (!animator.GetBool("isDashing") && Player.player.isDashing)
+        {
+            playerS.PlayDash();
+            dashParticle.Play();
+            Debug.Log("Dash effects triggered");
+        }
         animator.SetBool("isDashing", Player.player.isDashing);
     }
 }

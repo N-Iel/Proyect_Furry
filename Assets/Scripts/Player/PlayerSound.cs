@@ -19,6 +19,7 @@ public class PlayerSound : MonoBehaviour
 
     public void PlayStep()
     {
+        ResetPitch();
         audioS.clip = step[Random.Range(0, step.Length)];
         audioS.pitch = Random.Range(0.95f, 1.05f);
         audioS.Play();
