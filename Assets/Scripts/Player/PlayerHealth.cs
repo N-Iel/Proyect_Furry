@@ -73,9 +73,9 @@ public class PlayerHealth : MonoBehaviour
 
     #region colliders
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Enemy") && !Player.player.isinvincible) Hit(1.0f);
+        if (collision.gameObject.CompareTag("Enemy") && !Player.player.isinvincible) Hit(1.0f);
     }
 
     #endregion

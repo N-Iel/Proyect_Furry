@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
     public bool isDashing = false;
 
     [Header("Attack")]
-    bool isAttacking = false;
+    public bool canAttack = true;
+    public bool isAttacking = false;
 
     [Header("Model")]
     [SerializeField] GameObject playerModel;
