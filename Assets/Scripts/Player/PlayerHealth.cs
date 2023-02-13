@@ -9,7 +9,10 @@ public class PlayerHealth : MonoBehaviour
                  shield,
                  repairRate = 0.3f,
                  repairTimeDelay = 0.1f,
-                 invicibleTime = 1.0f;
+                 invicibleTime = 2.0f,
+                 invincibleWarning = 1.5f;
+
+    public Animator shieldAnim;
 
     bool isRecovering = false;
 
@@ -37,8 +40,25 @@ public class PlayerHealth : MonoBehaviour
             StopCoroutine(RecoverShield());
             isRecovering = false;
         }
+
+        // Dead check
+        if ( shield < 1 ) { Death(); return; }
+
         StartCoroutine(Invincible());
+        shield = Mathf.Floor(shield);
         shield -= _dmg;
+        Debug.Log(shield);
+        // CanAttack check
+        Player.player.canAttack = shield < 1 ? false : true;
+    }
+    
+    void Death()
+    {
+        Player.player.canAttack = false;
+        Player.player.canDash = false;
+        Player.player.canMove = false;
+        Player.player.rb.velocity = Vector3.zero;
+        Debug.Log("Game over");
     }
 
     void UpdateShieldBar()
@@ -56,6 +76,7 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.Log("recovering");
             shield = Mathf.Clamp(shield + repairRate, 0, maxShield);
+            if (Player.player.canAttack = shield < 1 ? false : true);
             yield return new WaitForSeconds(repairTimeDelay);
         }
         isRecovering = false;
@@ -64,10 +85,16 @@ public class PlayerHealth : MonoBehaviour
     IEnumerator Invincible()
     {
         Player.player.isinvincible = true;
-        Debug.Log("Is invincible");
-        yield return new WaitForSeconds(invicibleTime);
+        shieldAnim.enabled = true;
+
+        yield return new WaitForSeconds(invincibleWarning);
+
+        shieldAnim.SetTrigger("fadeOut");
+
+        yield return new WaitForSeconds(invicibleTime - invincibleWarning);
+
         Player.player.isinvincible = false;
-        Debug.Log("No longer invincible");
+        shieldAnim.enabled = false;
     }
     #endregion
 
@@ -75,6 +102,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Update with monster dmg
         if (collision.gameObject.CompareTag("Enemy") && !Player.player.isinvincible) Hit(1.0f);
     }
 

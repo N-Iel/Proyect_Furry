@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (Player.player.isDashing) return;
+        if (!Player.player.canMove && Player.player.isDashing) return;
 
         MovementInput();
         UpdateLookingDir();
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if ((!Player.player.isMoveEnabled || Player.player.isDashing))
+        if ((!Player.player.canMove || Player.player.isDashing))
         {
             Player.player.isMoving = false;
             return;

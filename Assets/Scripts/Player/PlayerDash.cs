@@ -41,7 +41,6 @@ public class PlayerDash : MonoBehaviour
         // Setting player state
         Player.player.playerAnim.PlayDash();
         Player.player.canDash = false;
-        Player.player.canAttack = false;
         Player.player.isDashing = true;
         Player.player.playerCollider.enabled = false;
         Player.player.isinvincible = true;
@@ -58,7 +57,6 @@ public class PlayerDash : MonoBehaviour
         Player.player.isDashing = false;
         Player.player.isinvincible = false;
         Player.player.playerCollider.enabled = true;
-        Player.player.canAttack = true;
         yield return new WaitForSeconds(dashingCooldown);
 
         // Reset

@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public bool isinvincible = false;
 
     [Header("Movement")]
-    public bool isMoveEnabled = true;
+    public bool canMove = true;
     public bool isMoving = false;
     public Vector2 lookingDir;
     Vector2 storedLookingDir;
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         // Prevent player from moving without rb
         if(!rb)
         {
-            isMoveEnabled = false;
+            canMove = false;
             canDash = false;
         }
     }

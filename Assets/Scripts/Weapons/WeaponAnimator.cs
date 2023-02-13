@@ -16,6 +16,5 @@ public class WeaponAnimator : MonoBehaviour
     {
         animator.SetTrigger("attack");
         Player.player.isAttacking = true;
-        Player.player.canAttack = false;
     }
 }

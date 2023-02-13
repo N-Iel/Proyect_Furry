@@ -30,7 +30,7 @@ public class Weapon : MonoBehaviour
     {
         coolDownCounter += Time.deltaTime;
 
-        if(!Player.player.isAttacking && Player.player.canAttack && coolDownCounter >= coolDownTime)
+        if(!Player.player.isAttacking && !Player.player.isDashing && Player.player.canAttack && coolDownCounter >= coolDownTime)
             AttackInput();
     }
 
@@ -49,7 +49,6 @@ public class Weapon : MonoBehaviour
     {
         attackCollider.enabled = false;
         Player.player.isAttacking = false;
-        Player.player.canAttack = true;
         coolDownCounter = 0;
     }
 }
