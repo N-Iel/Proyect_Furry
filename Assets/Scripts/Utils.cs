@@ -15,4 +15,9 @@ public class Utils : MonoBehaviour
     {
         return Mathf.Round(_num * 100f) / 100f;
     }
+
+    public void ResetPitch(AudioSource audioS, float _pitch)
+    {
+        audioS.pitch = _pitch;
+    }
 }

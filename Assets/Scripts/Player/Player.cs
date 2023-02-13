@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     public PlayerAnimator playerAnim;
 
     public Rigidbody2D rb { get; private set; }
+    public Collider2D playerCollider;
     public static Player player;
     #endregion
 

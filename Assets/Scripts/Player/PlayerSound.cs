@@ -19,7 +19,7 @@ public class PlayerSound : MonoBehaviour
 
     public void PlayStep()
     {
-        ResetPitch();
+        Utils.utils.ResetPitch(audioS, originalPitch);
         audioS.clip = step[Random.Range(0, step.Length)];
         audioS.pitch = Random.Range(0.95f, 1.05f);
         audioS.Play();
@@ -27,13 +27,8 @@ public class PlayerSound : MonoBehaviour
 
     public void PlayDash()
     {
-        ResetPitch();
+        Utils.utils.ResetPitch(audioS, originalPitch);
         audioS.clip = dash[Random.Range(0, dash.Length)];
         audioS.Play();
-    }
-
-    public void ResetPitch()
-    {
-        audioS.pitch = originalPitch;
     }
 }
