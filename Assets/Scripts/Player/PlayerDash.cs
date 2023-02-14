@@ -8,17 +8,16 @@ public class PlayerDash : MonoBehaviour
     // Dash Params
     public float dashingPower = 24f,
                  dashingTime = 0.2f,
-                 dashingCooldown = 1f;
+                 dashingCooldown = 1f,
+                 dashingCost = 0.8f;
 
     // Others
-    TrailRenderer tr;
     #endregion
 
     #region LifeCycle
     void Start()
     {
-        tr = GetComponent<TrailRenderer>();
-        if (!tr) Player.player.canDash = false;
+        Player.player.canDash = true;
     }
 
     // Update is called once per frame
@@ -31,31 +30,33 @@ public class PlayerDash : MonoBehaviour
     #region Methods
     void DashInput()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift)) && Player.player.canDash) StartCoroutine(Dash());
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift)) && Player.player.canDash && !Player.player.isExhausted) StartCoroutine(Dash());
     }
     #endregion
 
     #region Corrutines
     IEnumerator Dash()
     {
-        // Setting player state
+        // Update Player state
         Player.player.playerAnim.PlayDash();
+
         Player.player.canDash = false;
         Player.player.isDashing = true;
+
         Player.player.playerCollider.enabled = false;
-        Player.player.isinvincible = true;
-        
+        Player.player.isInvincible = true;
+
+        Player.player.health.ReduceShield(dashingCost);
+
 
         // Dash
         Player.player.rb.velocity = Player.player.lookingDir * dashingPower;
-        tr.emitting = true;
         yield return new WaitForSeconds(dashingTime);
 
         // CoolDown
         Player.player.playerAnim.EndDash();
-        tr.emitting = false;
         Player.player.isDashing = false;
-        Player.player.isinvincible = false;
+        Player.player.isInvincible = false;
         Player.player.playerCollider.enabled = true;
         yield return new WaitForSeconds(dashingCooldown);
 

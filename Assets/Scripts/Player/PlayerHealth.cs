@@ -27,13 +27,13 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (!Player.player.isinvincible && shield < maxShield && !isRecovering) StartCoroutine(RecoverShield());
-        UpdateShieldBar();
+        if (!Player.player.isInvincible && shield < maxShield && !isRecovering) StartCoroutine(RecoverShield());
+        UpdateShieldStatus();
     }
     #endregion
 
     #region Methods
-    void Hit(float _dmg)
+    void Hit()
     {
         if (isRecovering)
         {
@@ -42,14 +42,11 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Dead check
-        if ( shield < 1 ) { Death(); return; }
+        if ( shield < 1 && Player.player.isExhausted ) { Death(); return; }
 
         StartCoroutine(Invincible());
         shield = Mathf.Floor(shield);
-        shield -= _dmg;
-        Debug.Log(shield);
-        // CanAttack check
-        Player.player.canAttack = shield < 1 ? false : true;
+        if( shield >= 1 ) shield -= 1;
     }
     
     void Death()
@@ -58,12 +55,17 @@ public class PlayerHealth : MonoBehaviour
         Player.player.canDash = false;
         Player.player.canMove = false;
         Player.player.rb.velocity = Vector3.zero;
-        Debug.Log("Game over");
     }
 
-    void UpdateShieldBar()
+    void UpdateShieldStatus()
     {
         shieldBar.fillAmount = shield / maxShield;
+        if (shield == 0) Player.player.isExhausted = true;
+    }
+
+    public void ReduceShield(float _amount)
+    {
+        shield -= _amount;
     }
     #endregion
 
@@ -74,9 +76,8 @@ public class PlayerHealth : MonoBehaviour
         isRecovering = true;
         while (isRecovering)
         {
-            Debug.Log("recovering");
             shield = Mathf.Clamp(shield + repairRate, 0, maxShield);
-            if (Player.player.canAttack = shield < 1 ? false : true);
+            if (Player.player.isExhausted && shield >= 1) Player.player.isExhausted = false;
             yield return new WaitForSeconds(repairTimeDelay);
         }
         isRecovering = false;
@@ -84,7 +85,7 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator Invincible()
     {
-        Player.player.isinvincible = true;
+        Player.player.isInvincible = true;
         shieldAnim.enabled = true;
 
         yield return new WaitForSeconds(invincibleWarning);
@@ -93,7 +94,7 @@ public class PlayerHealth : MonoBehaviour
 
         yield return new WaitForSeconds(invicibleTime - invincibleWarning);
 
-        Player.player.isinvincible = false;
+        Player.player.isInvincible = false;
         shieldAnim.enabled = false;
     }
     #endregion
@@ -103,7 +104,7 @@ public class PlayerHealth : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Update with monster dmg
-        if (collision.gameObject.CompareTag("Enemy") && !Player.player.isinvincible) Hit(1.0f);
+        if (collision.gameObject.CompareTag("Enemy") && !Player.player.isInvincible) Hit();
     }
 
     #endregion

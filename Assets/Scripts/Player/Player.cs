@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
     #region Variables
     [Header("General")]
     public bool isDead = false;
-    public bool isinvincible = false;
+    public bool isInvincible = false;
+    public bool isExhausted = false;
 
     [Header("Movement")]
     public bool canMove = true;
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     public PlayerAnimator playerAnim;
 
     public Rigidbody2D rb { get; private set; }
+    public PlayerHealth health { get; private set; }
     public Collider2D playerCollider;
     public static Player player;
     #endregion
@@ -42,6 +44,7 @@ public class Player : MonoBehaviour
     {
         // Initialization
         rb = GetComponent<Rigidbody2D>();
+        health = GetComponent<PlayerHealth>();
         lookingDir = Vector2.zero;
         storedLookingDir = Vector2.zero;
 
